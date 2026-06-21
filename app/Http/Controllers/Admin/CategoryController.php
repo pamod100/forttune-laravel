@@ -17,28 +17,40 @@ class CategoryController extends Controller
 
     public function store(Request $request)
     {
-        $validated = $request->validate([
-            'name' => 'required|string|max:100',
-            'icon' => 'nullable|string|max:10',
+        $request->validate([
+            'name'  => 'required|string|max:100',
+            'image' => 'nullable|image|max:2048',
         ]);
 
-        $validated['slug'] = Str::slug($validated['name']);
+        $imagePath = null;
+        if ($request->hasFile('image')) {
+            $imagePath = $request->file('image')->store('categories', 'public');
+        }
 
-        Category::create($validated);
+        Category::create([
+            'name'  => $request->name,
+            'slug'  => Str::slug($request->name),
+            'icon'  => $request->icon,
+            'image' => $imagePath,
+        ]);
 
         return back()->with('success', 'Category added.');
     }
 
     public function update(Request $request, Category $category)
     {
-        $validated = $request->validate([
-            'name' => 'required|string|max:100',
-            'icon' => 'nullable|string|max:10',
+        $request->validate([
+            'name'  => 'required|string|max:100',
+            'image' => 'nullable|image|max:2048',
         ]);
 
-        $validated['slug'] = Str::slug($validated['name']);
+        if ($request->hasFile('image')) {
+            $category->image = $request->file('image')->store('categories', 'public');
+        }
 
-        $category->update($validated);
+        $category->name = $request->name;
+        $category->slug = Str::slug($request->name);
+        $category->save();
 
         return back()->with('success', 'Category updated.');
     }
