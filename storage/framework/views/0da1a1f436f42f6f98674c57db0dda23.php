@@ -37,6 +37,9 @@
         <a href="<?php echo e(route('home')); ?>" class="admin-nav-link" target="_blank">
           <span class="nav-icon">🌐</span> View Website
         </a>
+        <a href="<?php echo e(route('admin.testimonials.index')); ?>" class="admin-nav-link <?php echo e(request()->routeIs('admin.testimonials.*') ? 'active' : ''); ?>">
+  <span class="nav-icon">⭐</span> Testimonials
+</a>
       </nav>
 
       <div class="admin-user">

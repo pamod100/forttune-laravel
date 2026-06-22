@@ -27,7 +27,7 @@
         <a href="<?php echo e(route('home')); ?>" class="nav-link <?php echo e(request()->routeIs('home') ? 'active' : ''); ?>">Home</a>
         <a href="<?php echo e(route('products.index')); ?>" class="nav-link <?php echo e(request()->routeIs('products.*') ? 'active' : ''); ?>">Products</a>
         <a href="<?php echo e(route('home')); ?>#brands" class="nav-link">Brands</a>
-        <a href="<?php echo e(route('home')); ?>#services" class="nav-link">Services</a>
+       <a href="<?php echo e(route('services')); ?>" class="nav-link <?php echo e(request()->routeIs('services') ? 'active' : ''); ?>">Services</a>
         <a href="<?php echo e(route('home')); ?>#contact" class="nav-link">Contact</a>
       </nav>
 

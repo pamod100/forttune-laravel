@@ -161,21 +161,126 @@
   </div>
 </section>
 
-  <!-- SERVICES -->
-  <section class="services section bg-dark" id="services">
-    <div class="container">
-      <div class="section-header light">
-        <span class="section-eyebrow">What We Offer</span>
-        <h2 class="section-title">More Than Just Products</h2>
-      </div>
-      <div class="services-grid">
-        <div class="service-card"><div class="service-icon">🚚</div><h3>Island-Wide Delivery</h3><p>Fast, reliable delivery to any address across Sri Lanka.</p></div>
-        <div class="service-card"><div class="service-icon">🛡️</div><h3>Genuine Warranty</h3><p>All products come with manufacturer warranty.</p></div>
-        <div class="service-card"><div class="service-icon">🏪</div><h3>Click &amp; Collect</h3><p>Order online, pick up from our Mount Lavinia store.</p></div>
-        <div class="service-card"><div class="service-icon">🤝</div><h3>Dealer Network</h3><p>Join our 500+ channel partner network for wholesale pricing.</p></div>
-      </div>
+<!-- TESTIMONIALS -->
+<section class="testimonials section" id="services">
+  <div class="container">
+ 
+    {{-- Section Header --}}
+    <div class="section-header">
+      <span class="section-eyebrow">What Customers Say</span>
+      <h2 class="section-title">Trusted by Businesses Across Sri Lanka</h2>
     </div>
-  </section>
+ 
+    @if($testimonials->count() > 0)
+ 
+      {{-- Google-style Overall Rating Bar --}}
+      @php
+        $avgRating = round($testimonials->avg('rating'), 1);
+        $totalReviews = $testimonials->count();
+        // Count per star
+        $starCounts = [];
+        for ($s = 5; $s >= 1; $s--) {
+          $starCounts[$s] = $testimonials->where('rating', $s)->count();
+        }
+      @endphp
+ 
+      <div class="gr-summary-card">
+        {{-- Left: Big Score --}}
+        <div class="gr-score-block">
+          <div class="gr-score-number">{{ number_format($avgRating, 1) }}</div>
+          <div class="gr-score-stars">
+            @for($i = 1; $i <= 5; $i++)
+              <svg class="gr-star {{ $i <= round($avgRating) ? 'filled' : 'empty' }}" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                <path d="M10 1l2.39 4.84 5.34.78-3.87 3.77.91 5.32L10 13.27l-4.77 2.51.91-5.32L2.27 6.62l5.34-.78z"/>
+              </svg>
+            @endfor
+          </div>
+          <div class="gr-score-total">{{ $totalReviews }} review{{ $totalReviews > 1 ? 's' : '' }}</div>
+        </div>
+ 
+        {{-- Divider --}}
+        <div class="gr-divider"></div>
+ 
+        {{-- Right: Star breakdown bars --}}
+        <div class="gr-bars-block">
+          @for($s = 5; $s >= 1; $s--)
+            @php $pct = $totalReviews > 0 ? ($starCounts[$s] / $totalReviews) * 100 : 0; @endphp
+            <div class="gr-bar-row">
+              <span class="gr-bar-label">{{ $s }}</span>
+              <svg class="gr-bar-star" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                <path d="M10 1l2.39 4.84 5.34.78-3.87 3.77.91 5.32L10 13.27l-4.77 2.51.91-5.32L2.27 6.62l5.34-.78z"/>
+              </svg>
+              <div class="gr-bar-track">
+                <div class="gr-bar-fill" style="width: {{ $pct }}%;"></div>
+              </div>
+              <span class="gr-bar-count">{{ $starCounts[$s] }}</span>
+            </div>
+          @endfor
+        </div>
+      </div>
+ 
+      {{-- Review Cards Grid --}}
+      <div class="gr-reviews-grid">
+        @foreach($testimonials as $t)
+          @php
+            $initials = collect(explode(' ', trim($t->name)))
+              ->map(fn($w) => strtoupper(substr($w, 0, 1)))
+              ->take(2)
+              ->join('');
+            // Pick a color based on first letter
+            $colors = ['#4285F4','#EA4335','#34A853','#FBBC05','#7B61FF','#00ACC1'];
+            $colorIndex = (ord($initials[0]) - 65) % count($colors);
+            $avatarColor = $colors[$colorIndex];
+          @endphp
+          <div class="gr-card">
+            {{-- Card Header --}}
+            <div class="gr-card-header">
+              <div class="gr-avatar" style="background: {{ $avatarColor }};">{{ $initials }}</div>
+              <div class="gr-card-meta">
+                <div class="gr-card-name">{{ $t->name }}</div>
+                @if($t->role)
+                  <div class="gr-card-role">{{ $t->role }}</div>
+                @endif
+              </div>
+              {{-- Google G icon --}}
+              <div class="gr-google-icon">
+                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
+                  <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+                  <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/>
+                  <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
+                </svg>
+              </div>
+            </div>
+ 
+            {{-- Stars + Date --}}
+            <div class="gr-card-stars-row">
+              <div class="gr-card-stars">
+                @for($i = 1; $i <= 5; $i++)
+                  <svg class="gr-star sm {{ $i <= $t->rating ? 'filled' : 'empty' }}" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M10 1l2.39 4.84 5.34.78-3.87 3.77.91 5.32L10 13.27l-4.77 2.51.91-5.32L2.27 6.62l5.34-.78z"/>
+                  </svg>
+                @endfor
+              </div>
+              <span class="gr-card-date">{{ $t->created_at->diffForHumans() }}</span>
+            </div>
+ 
+            {{-- Review Text --}}
+            <p class="gr-card-text">{{ $t->message }}</p>
+          </div>
+        @endforeach
+      </div>
+ 
+    @else
+      <p style="text-align:center; color:#888; padding: 2rem 0;">No reviews yet.</p>
+    @endif
+ 
+    <div style="text-align:center; margin-top:2.5rem;">
+      <a href="{{ route('services') }}" class="btn-view-services">View Our Services →</a>
+    </div>
+ 
+  </div>
+</section>
 
   <!-- CONTACT STRIP -->
   <section class="contact-strip section" id="contact">

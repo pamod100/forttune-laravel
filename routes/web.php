@@ -12,6 +12,8 @@ use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProductController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\TestimonialController;
+use App\Http\Controllers\Admin\TestimonialController as AdminTestimonialController;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,6 +25,8 @@ Route::get('/products', [ProductController::class, 'index'])->name('products.ind
 Route::get('/products/{product:slug}', [ProductController::class, 'show'])->name('products.show');
 
 Route::get('/cart', [CheckoutController::class, 'index'])->name('cart');
+Route::post('/feedback', [TestimonialController::class, 'store'])->name('feedback.store');
+Route::get('/services', function () { return view('frontend.services'); })->name('services');
 Route::post('/checkout/place-order', [CheckoutController::class, 'placeOrder'])->name('checkout.place');
 
 /*
@@ -69,6 +73,11 @@ Route::middleware(['auth', 'is_admin'])->prefix('admin')->name('admin.')->group(
     Route::put('/products/{product}', [AdminProductController::class, 'update'])->name('products.update');
     Route::delete('/products/{product}', [AdminProductController::class, 'destroy'])->name('products.destroy');
     Route::post('/products/{product}/toggle-stock', [AdminProductController::class, 'toggleStock'])->name('products.toggle-stock');
+
+  // Testimonials
+Route::get('/testimonials', [AdminTestimonialController::class, 'index'])->name('testimonials.index');
+Route::post('/testimonials/{testimonial}/approve', [AdminTestimonialController::class, 'approve'])->name('testimonials.approve');
+Route::delete('/testimonials/{testimonial}', [AdminTestimonialController::class, 'destroy'])->name('testimonials.destroy');
 
     // Categories
     Route::get('/categories', [AdminCategoryController::class, 'index'])->name('categories.index');

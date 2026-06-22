@@ -27,7 +27,7 @@
         <a href="{{ route('home') }}" class="nav-link {{ request()->routeIs('home') ? 'active' : '' }}">Home</a>
         <a href="{{ route('products.index') }}" class="nav-link {{ request()->routeIs('products.*') ? 'active' : '' }}">Products</a>
         <a href="{{ route('home') }}#brands" class="nav-link">Brands</a>
-        <a href="{{ route('home') }}#services" class="nav-link">Services</a>
+       <a href="{{ route('services') }}" class="nav-link {{ request()->routeIs('services') ? 'active' : '' }}">Services</a>
         <a href="{{ route('home') }}#contact" class="nav-link">Contact</a>
       </nav>
 

@@ -37,6 +37,9 @@
         <a href="{{ route('home') }}" class="admin-nav-link" target="_blank">
           <span class="nav-icon">🌐</span> View Website
         </a>
+        <a href="{{ route('admin.testimonials.index') }}" class="admin-nav-link {{ request()->routeIs('admin.testimonials.*') ? 'active' : '' }}">
+  <span class="nav-icon">⭐</span> Testimonials
+</a>
       </nav>
 
       <div class="admin-user">
