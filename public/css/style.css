@@ -164,6 +164,13 @@ input, textarea, select { font-family: inherit; }
 .cat-arrow { padding: 0.5rem 1rem 0.85rem; font-size: 1.1rem; color: var(--blue); transition: transform 0.2s; }
 .cat-card:hover .cat-arrow { transform: translateX(4px); }
 
+
+/* === VIDEO SECTION === */
+.video-section { padding: 0; margin: 0; }
+.video-wrap { position: relative; width: 100%; overflow: hidden; }
+.promo-video { width: 100%; height: 600px; object-fit: cover; display: block; }
+@media (max-width: 768px) { .promo-video { height: 280px; } }
+
 /* Admin Upload Box */
 .cat-upload-box { border: 2px dashed var(--grey-200); border-radius: 10px; padding: 1.5rem; text-align: center; background: var(--grey-50); transition: border-color 0.2s; }
 .cat-upload-box:hover { border-color: var(--blue); }

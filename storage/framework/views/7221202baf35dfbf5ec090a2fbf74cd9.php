@@ -87,6 +87,16 @@
   </div>
 </section>
 
+
+<!-- VIDEO SECTION -->
+<section class="video-section">
+  <div class="video-wrap">
+    <video class="promo-video" autoplay muted loop playsinline>
+      <source src="<?php echo e(asset('videos/forttune-promo.mp4')); ?>" type="video/mp4">
+    </video>
+  </div>
+</section>
+
   <!-- FEATURED PRODUCTS (from database) -->
   <section class="featured section bg-light">
     <div class="container">
@@ -328,6 +338,26 @@
 const carousel = document.getElementById('brandsCarousel');
 if (carousel) {
   carousel.innerHTML += carousel.innerHTML;
+}
+</script>
+
+<script>
+const video = document.querySelector('.promo-video');
+const playBtn = document.getElementById('videoPlayBtn');
+const overlay = document.querySelector('.video-overlay');
+
+if (video && playBtn) {
+  playBtn.addEventListener('click', () => {
+    if (video.paused) {
+      video.play();
+      playBtn.classList.add('playing');
+      overlay.classList.add('hidden');
+    } else {
+      video.pause();
+      playBtn.classList.remove('playing');
+      overlay.classList.remove('hidden');
+    }
+  });
 }
 </script>
 <?php $__env->stopPush(); ?>
